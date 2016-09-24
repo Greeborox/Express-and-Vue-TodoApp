@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>VueTest</title>
+    <style media="screen">
+      #vueApp ul li span {
+        display: inline-block;
+        width: 150px;
+      }
+      #vueApp ul li {
+        padding: 5px
+      }
+    </style>
+  </head>
+  <body>
+
+    <h1>TODO LIST:</h1>
+
+    <div id="vueApp">
+      <p>Active:</p>
+      <ul>
+        <li v-for="todo in todos | filterBy false in 'complete' | orderBy 'name'">
+          <input v-if="!todo.editing" type="checkbox" v-on:change="changeCheck(todo)" checked={{todo.complete}}>
+          <span v-if="!todo.editing">{{todo.name | capitalize}}</span>
+          <input v-if="todo.editing" v-model="todo.name">
+          <input v-if="!todo.editing" v-on:click="edit(todo)" type="button" value="edit">
+          <input v-if="todo.editing" v-on:click="save(todo)" type="button" value="save">
+          <input v-if="!todo.editing" v-on:click="remove(todo)" type="button" value="remove">
+        </li>
+      </ul>
+      <p>Completed:</p>
+      <ul>
+        <li v-for="todo in todos | filterBy true in 'complete'">
+          <input v-if="!todo.editing" type="checkbox" v-on:change="changeCheck(todo)" checked={{todo.complete}}>
+          <span v-if="!todo.editing">{{todo.name | capitalize}}</span>
+          <input v-if="!todo.editing" v-on:click="remove(todo)" type="button" value="remove">
+        </li>
+      </ul>
+      <p>New Todo:</p>
+      <input v-model="currTodo" value="">
+      <input v-on:click="addTodo" :disabled="currTodo.length === 0" type="button" value="Add">
+      <br><br>
+      <input v-on:click="submit" type="button" value="Save To Do List">
+      <br><br>
+      {{todos | json}}
+    </div>
+
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.27/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/vue.resource/1.0.3/vue-resource.min.js"></script>
+    <script type="text/javascript" src="/app.js"></script>
+  </body>
+</html>
