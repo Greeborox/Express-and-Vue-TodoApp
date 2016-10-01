@@ -4,10 +4,26 @@ var vueApp = new Vue({
     todos: [],
     currTodo: "",
   },
+  computed: {
+    uniqueImportance:function(){
+      importanceArray = [];
+      for (var i = 0; i < this.todos.length; i++) {
+        if(importanceArray.indexOf(this.todos[i].importance) === -1){
+          importanceArray.push(this.todos[i].importance);
+        }
+      }
+      return importanceArray;
+    }
+  },
   methods: {
     addTodo: function(){
-      this.todos.push({name:this.currTodo,editing:false,complete:false});
+      var tempImportance = this.newImportance
+      if(this.newImportance === "" || !this.newImportance) {
+        tempImportance = "low"
+      }
+      this.todos.push({name:this.currTodo,editing:false,complete:false,importance:tempImportance});
       this.currTodo = "";
+      this.newImportance = "";
     },
     remove: function(todo) {
       var index = this.todos.indexOf(todo);

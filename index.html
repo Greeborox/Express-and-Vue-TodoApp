@@ -19,8 +19,11 @@
 
     <div id="vueApp">
       <p>Active:</p>
+      Importance: <select v-model="selector">
+        <option v-for="todoImportance in uniqueImportance" value={{todoImportance}}>{{todoImportance}}</option>
+      </select>
       <ul>
-        <li v-for="todo in todos | filterBy false in 'complete' | orderBy 'name'">
+        <li v-for="todo in todos | filterBy false in 'complete' | filterBy selector in 'importance'">
           <input v-if="!todo.editing" type="checkbox" v-on:change="changeCheck(todo)" checked={{todo.complete}}>
           <span v-if="!todo.editing">{{todo.name | capitalize}}</span>
           <input v-if="todo.editing" v-model="todo.name">
@@ -39,6 +42,10 @@
       </ul>
       <p>New Todo:</p>
       <input v-model="currTodo" value="">
+      <select v-model="newImportance">
+        <option value="high">high</option>
+        <option value="low">low</option>
+      </select>
       <input v-on:click="addTodo" :disabled="currTodo.length === 0" type="button" value="Add">
       <br><br>
       <input v-on:click="submit" type="button" value="Save To Do List">
